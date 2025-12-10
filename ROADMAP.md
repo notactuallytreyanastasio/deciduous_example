@@ -4,6 +4,24 @@
 
 ---
 
+## Known Bugs / Critical Fixes
+
+### Database Reset/Corruption
+- **Bug:** Database gets reset when used across multiple apps/sessions
+- **Symptom:** `deciduous link` fails with `FOREIGN KEY constraint failed` because referenced nodes no longer exist
+- **Impact:** Complete loss of decision history
+- **Fix needed:**
+  - Investigate why `.deciduous/deciduous.db` gets wiped
+  - Add database integrity checks on startup
+  - Auto-backup before operations
+  - Better error messages when graph state is inconsistent
+
+### Link Command Fails Silently on Missing Nodes
+- Should warn clearly if source or target node doesn't exist
+- Currently fails with cryptic FOREIGN KEY error
+
+---
+
 ## Git Integration
 
 ### Branch-Based Decision Groups
