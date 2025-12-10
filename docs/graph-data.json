@@ -1,0 +1,1000 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "node_type": "goal",
+      "title": "Build wc clone in Rust",
+      "description": "Replicate core wc functionality: word count and line count (-l) for regular files. Keep it dependency-minimal. Will later compile to WASM for web UI.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:33:25.557016-05:00",
+      "updated_at": "2025-12-09T22:33:25.557016-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 2,
+      "node_type": "decision",
+      "title": "Choose argument parsing approach",
+      "description": "Need to decide: use clap/structopt, roll our own minimal parser, or use std::env::args directly. Must balance simplicity vs future extensibility vs WASM compatibility.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:33:31.715518-05:00",
+      "updated_at": "2025-12-09T22:33:31.715518-05:00",
+      "metadata_json": "{\"confidence\":80}"
+    },
+    {
+      "id": 3,
+      "node_type": "observation",
+      "title": "WASM target constrains dependency choices",
+      "description": "Since we plan to compile to WASM, we need dependencies that support wasm32 target. Clap works with WASM but adds bulk. std::env::args is simplest but may not exist in WASM context. For WASM, args may come from JS anyway.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:33:49.657098-05:00",
+      "updated_at": "2025-12-09T22:33:49.657098-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 4,
+      "node_type": "decision",
+      "title": "Use std::env::args for CLI, separate core logic",
+      "description": "Decision: Keep argument parsing minimal with std::env::args. Core counting logic will be in a separate module that takes &str or &[u8], making it trivially portable to WASM where input comes from JS FileReader.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:33:58.974204-05:00",
+      "updated_at": "2025-12-09T22:33:58.974204-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 5,
+      "node_type": "action",
+      "title": "Initialize Rust project with cargo",
+      "description": "Creating new Rust binary project 'rwc' (rust wc) using cargo init",
+      "status": "pending",
+      "created_at": "2025-12-09T22:34:23.173478-05:00",
+      "updated_at": "2025-12-09T22:34:23.173478-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 6,
+      "node_type": "outcome",
+      "title": "Rust project initialized successfully",
+      "description": "cargo init created Cargo.toml and src/main.rs. Project named 'rwc'. Ready for implementation.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:34:48.256704-05:00",
+      "updated_at": "2025-12-09T22:34:48.256704-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 7,
+      "node_type": "action",
+      "title": "Implement line count feature",
+      "description": "Implementing wc -l functionality: count newlines in a file. Will create core counting module and CLI interface using std::env::args.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:35:07.882146-05:00",
+      "updated_at": "2025-12-09T22:35:07.882146-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 8,
+      "node_type": "decision",
+      "title": "Structure: lib.rs for core logic, main.rs for CLI",
+      "description": "Separating concerns: lib.rs will have count_lines() and count_words() functions that work on &str. main.rs handles file I/O and argument parsing. This makes WASM port trivial - lib functions can be called from JS.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:35:26.545022-05:00",
+      "updated_at": "2025-12-09T22:35:26.545022-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 9,
+      "node_type": "outcome",
+      "title": "Line count and word count implemented successfully",
+      "description": "Both count_lines() and count_words() work correctly. Tests pass (9/9). Output matches real wc for both default and -l modes. Code is clean and WASM-ready with separated lib.rs.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:36:22.579792-05:00",
+      "updated_at": "2025-12-09T22:36:22.579792-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 10,
+      "node_type": "action",
+      "title": "Create PR for rwc line count feature",
+      "description": "Committing implementation and creating GitHub PR. This is the first in a stacked PR chain.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:36:40.135006-05:00",
+      "updated_at": "2025-12-09T22:36:40.135006-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 11,
+      "node_type": "outcome",
+      "title": "PR #1 created successfully",
+      "description": "GitHub PR created: https://github.com/notactuallytreyanastasio/deciduous_example/pull/1 - First PR in the stacked chain for rwc implementation.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:37:36.873102-05:00",
+      "updated_at": "2025-12-09T22:37:36.873102-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 12,
+      "node_type": "goal",
+      "title": "Compile rwc to WASM",
+      "description": "Build the rwc library as a WebAssembly module that can be called from JavaScript. This enables the web UI phase.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:39:40.343308-05:00",
+      "updated_at": "2025-12-09T22:39:40.343308-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 13,
+      "node_type": "decision",
+      "title": "Use wasm-bindgen + wasm-pack for WASM build",
+      "description": "wasm-bindgen is the standard for Rust-to-JS interop. wasm-pack simplifies the build process and generates npm-compatible packages. Alternatives like stdweb are deprecated.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:39:57.519912-05:00",
+      "updated_at": "2025-12-09T22:39:57.519912-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 14,
+      "node_type": "action",
+      "title": "Add wasm-bindgen and configure Cargo.toml for WASM",
+      "description": "Adding wasm-bindgen dependency and configuring crate-type to include cdylib for WASM compilation.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:40:25.472090-05:00",
+      "updated_at": "2025-12-09T22:40:25.472090-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 15,
+      "node_type": "action",
+      "title": "Add wasm-bindgen exports to lib.rs",
+      "description": "Adding #[wasm_bindgen] attribute to count_lines and count_words functions to expose them to JavaScript.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:40:51.781894-05:00",
+      "updated_at": "2025-12-09T22:40:51.781894-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 16,
+      "node_type": "observation",
+      "title": "Added count_bytes and count_all for complete WASM API",
+      "description": "Extended API beyond original wc -l scope: count_bytes() for byte count, count_all() returns WcResult struct with all three counts. Makes web UI more useful.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:41:22.322830-05:00",
+      "updated_at": "2025-12-09T22:41:22.322830-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 17,
+      "node_type": "action",
+      "title": "Build WASM package with wasm-pack",
+      "description": "Using wasm-pack build --target web to create WASM package suitable for browser usage with ES modules.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:41:56.408323-05:00",
+      "updated_at": "2025-12-09T22:41:56.408323-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 18,
+      "node_type": "observation",
+      "title": "Homebrew Rust lacks wasm32 target",
+      "description": "System uses Homebrew-installed Rust, not rustup. Need to either install wasm32 target manually or use rustup. Will check if rustup is available.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:42:12.897714-05:00",
+      "updated_at": "2025-12-09T22:42:12.897714-05:00",
+      "metadata_json": "{\"confidence\":80}"
+    },
+    {
+      "id": 19,
+      "node_type": "decision",
+      "title": "Install rustup to get wasm32 target",
+      "description": "Homebrew Rust doesn't have wasm32-unknown-unknown. Installing rustup is the standard way to get cross-compilation targets. Will install rustup and add the target.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:42:30.394788-05:00",
+      "updated_at": "2025-12-09T22:42:30.394788-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 20,
+      "node_type": "outcome",
+      "title": "WASM build successful",
+      "description": "wasm-pack build --target web completed. Package at ./pkg/. Had to install rustup and add wasm32-unknown-unknown target first.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:43:47.749667-05:00",
+      "updated_at": "2025-12-09T22:43:47.749667-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 21,
+      "node_type": "action",
+      "title": "Create test HTML to verify WASM in browser",
+      "description": "Creating a simple HTML file to test the WASM module in a browser context before building the full web UI.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:44:15.547825-05:00",
+      "updated_at": "2025-12-09T22:44:15.547825-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 22,
+      "node_type": "observation",
+      "title": "WASM tests require HTTP server due to ES modules",
+      "description": "Browser ES modules require HTTP server to load. Will use Python http.server to test. This is expected behavior for WASM/ES6 modules.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:44:46.262169-05:00",
+      "updated_at": "2025-12-09T22:44:46.262169-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 23,
+      "node_type": "action",
+      "title": "Create PR #2 for WASM support",
+      "description": "Committing WASM changes and creating stacked PR #2 based on feature/rwc-line-count",
+      "status": "pending",
+      "created_at": "2025-12-09T22:45:08.764-05:00",
+      "updated_at": "2025-12-09T22:45:08.764-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 24,
+      "node_type": "outcome",
+      "title": "PR #2 created successfully",
+      "description": "GitHub PR #2 created: https://github.com/notactuallytreyanastasio/deciduous_example/pull/2 - Stacked on PR #1, adds WASM support.",
+      "status": "pending",
+      "created_at": "2025-12-09T22:46:13.955823-05:00",
+      "updated_at": "2025-12-09T22:46:13.955823-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 25,
+      "node_type": "observation",
+      "title": "Pausing for parent repo tooling updates",
+      "description": "User is updating deciduous tooling in parent repo. Will improve PR writeup capabilities. Waiting before proceeding to Phase 3 (Web UI).",
+      "status": "pending",
+      "created_at": "2025-12-09T22:52:31.319415-05:00",
+      "updated_at": "2025-12-09T22:52:31.319415-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 26,
+      "node_type": "observation",
+      "title": "Upgraded to deciduous 0.2.1 with dot and writeup commands",
+      "description": "New features: 'deciduous dot' exports DOT format with PNG support, 'deciduous writeup' generates PR writeups from decision graph nodes. Will use these for Phase 3 PR.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:26:34.676072-05:00",
+      "updated_at": "2025-12-09T23:26:34.676072-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 27,
+      "node_type": "goal",
+      "title": "Build Web UI with file upload",
+      "description": "Create a web interface that allows users to upload files and see wc-style counts (lines, words, bytes) using the WASM module.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:26:57.866661-05:00",
+      "updated_at": "2025-12-09T23:26:57.866661-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 28,
+      "node_type": "decision",
+      "title": "Single-page app with vanilla JS, no framework",
+      "description": "Keep it simple: one HTML file with embedded CSS and JS. Uses ES modules to load WASM. FileReader API for file uploads. No build step needed - works directly from file server.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:27:18.747972-05:00",
+      "updated_at": "2025-12-09T23:27:18.747972-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 29,
+      "node_type": "action",
+      "title": "Create index.html with file upload UI",
+      "description": "Building the main web interface: file upload area with drag-and-drop support, results display showing lines/words/bytes, clean modern styling.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:27:34.575483-05:00",
+      "updated_at": "2025-12-09T23:27:34.575483-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 30,
+      "node_type": "outcome",
+      "title": "Web UI created with drag-and-drop file upload",
+      "description": "Built index.html with: drag-and-drop upload area, responsive 3-column stats display (lines/words/bytes), wc-style output format, dark theme, error handling, mobile-responsive design. Uses ES modules to load WASM.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:28:32.764882-05:00",
+      "updated_at": "2025-12-09T23:28:32.764882-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 31,
+      "node_type": "observation",
+      "title": "Web UI is 100% static - GitHub Pages ready",
+      "description": "index.html is self-contained: no build step, no bundler, no server-side code. Just needs to be served alongside ./pkg/ directory. FileReader API processes files client-side. Perfect for GitHub Pages deployment.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:28:50.193248-05:00",
+      "updated_at": "2025-12-09T23:28:50.193248-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 32,
+      "node_type": "action",
+      "title": "Create PR #3 for Web UI",
+      "description": "Committing Web UI and creating stacked PR #3 based on feature/rwc-wasm. Using deciduous writeup for PR description.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:29:09.959384-05:00",
+      "updated_at": "2025-12-09T23:29:09.959384-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 33,
+      "node_type": "outcome",
+      "title": "PR #3 created successfully",
+      "description": "GitHub PR #3 created: https://github.com/notactuallytreyanastasio/deciduous_example/pull/4 - Stacked on PR #2, adds Web UI with file upload. Used deciduous writeup for PR description.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:31:23.775013-05:00",
+      "updated_at": "2025-12-09T23:31:23.775013-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 34,
+      "node_type": "goal",
+      "title": "Deploy to GitHub Pages",
+      "description": "Set up GitHub Pages to host the rwc web UI. Make it accessible at a public URL, running entirely client-side with WASM.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:33:13.245668-05:00",
+      "updated_at": "2025-12-09T23:33:13.245668-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 35,
+      "node_type": "decision",
+      "title": "Use GitHub Actions to build WASM and deploy",
+      "description": "Strategy: GitHub Actions workflow that builds WASM with wasm-pack, then deploys to GitHub Pages. This ensures pkg/ is always fresh and we don't commit build artifacts to main. Uses actions/deploy-pages for deployment.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:33:40.128552-05:00",
+      "updated_at": "2025-12-09T23:33:40.128552-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 36,
+      "node_type": "action",
+      "title": "Create GitHub Actions workflow for WASM build and deploy",
+      "description": "Creating .github/workflows/deploy.yml that: installs Rust and wasm-pack, builds WASM, copies index.html and pkg/ to artifact, deploys to GitHub Pages.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:33:56.349314-05:00",
+      "updated_at": "2025-12-09T23:33:56.349314-05:00",
+      "metadata_json": "{\"confidence\":85}"
+    },
+    {
+      "id": 37,
+      "node_type": "observation",
+      "title": "dtolnay/rust-action simplifies Rust setup in Actions",
+      "description": "Using dtolnay/rust-action@stable which handles Rust toolchain setup cleanly. Can specify targets directly. Alternative would be actions-rs/toolchain but dtolnay's is more maintained.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:34:21.244596-05:00",
+      "updated_at": "2025-12-09T23:34:21.244596-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 38,
+      "node_type": "action",
+      "title": "Configure GitHub Pages via gh CLI",
+      "description": "Enabling GitHub Pages with GitHub Actions as the build source. This allows the workflow to deploy directly without a separate gh-pages branch.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:34:43.539454-05:00",
+      "updated_at": "2025-12-09T23:34:43.539454-05:00",
+      "metadata_json": "{\"confidence\":80}"
+    },
+    {
+      "id": 39,
+      "node_type": "outcome",
+      "title": "GitHub Pages configured with Actions build",
+      "description": "Pages enabled at https://notactuallytreyanastasio.github.io/deciduous_example/ with build_type=workflow. Will deploy automatically when workflow runs on main.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:35:07.155568-05:00",
+      "updated_at": "2025-12-09T23:35:07.155568-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 40,
+      "node_type": "action",
+      "title": "Create PR #4 for GitHub Pages deployment",
+      "description": "Committing workflow and creating stacked PR #4 based on feature/rwc-web-ui.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:35:23.999257-05:00",
+      "updated_at": "2025-12-09T23:35:23.999257-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 41,
+      "node_type": "outcome",
+      "title": "PR #5 created for GitHub Pages deployment",
+      "description": "GitHub PR #5 created: https://github.com/notactuallytreyanastasio/deciduous_example/pull/5 - Stacked on PR #4 (Web UI). Adds GitHub Actions workflow for automated WASM build and Pages deployment.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:37:39.420974-05:00",
+      "updated_at": "2025-12-09T23:37:39.420974-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 42,
+      "node_type": "observation",
+      "title": "Merging PR chain - preparing for live site",
+      "description": "User is merging the stacked PR chain. Once complete, site will be live at https://notactuallytreyanastasio.github.io/deciduous_example/. Next step: comprehensive README showcasing the deciduous workflow.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:49:47.451925-05:00",
+      "updated_at": "2025-12-09T23:49:47.451925-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 43,
+      "node_type": "goal",
+      "title": "Create comprehensive README demo",
+      "description": "Build a README that serves as a tour of deciduous: showing real decision trees, Claude integration, and the full journey from CLI to web app. Focus on the AI-assisted workflow, with CLI details at the end.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:54:11.576574-05:00",
+      "updated_at": "2025-12-09T23:54:11.576574-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 44,
+      "node_type": "observation",
+      "title": "Workflow failed - dtolnay/rust-action not found",
+      "description": "The GitHub Action dtolnay/rust-action doesn't exist. Need to use dtolnay/rust-toolchain instead, which is the correct action name.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:54:54.114396-05:00",
+      "updated_at": "2025-12-09T23:54:54.114396-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 45,
+      "node_type": "action",
+      "title": "Fix workflow - use dtolnay/rust-toolchain",
+      "description": "Correcting the GitHub Action from dtolnay/rust-action (doesn't exist) to dtolnay/rust-toolchain@stable which is the correct action.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:55:17.934559-05:00",
+      "updated_at": "2025-12-09T23:55:17.934559-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 46,
+      "node_type": "outcome",
+      "title": "Workflow fix pushed - awaiting new deploy",
+      "description": "Fixed the action name and pushed to main. GitHub Actions should now run successfully. Waiting for deploy to complete.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:56:03.540431-05:00",
+      "updated_at": "2025-12-09T23:56:03.540431-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 47,
+      "node_type": "observation",
+      "title": "Cargo.toml missing WASM config on main",
+      "description": "The [lib] crate-type and wasm-bindgen dependencies from PR #2 are missing on main. Need to add them for WASM build to work.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:58:59.942590-05:00",
+      "updated_at": "2025-12-09T23:58:59.942590-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 48,
+      "node_type": "action",
+      "title": "Add missing WASM config to main",
+      "description": "Adding wasm-bindgen to Cargo.toml and #[wasm_bindgen] exports to lib.rs to fix the deployment.",
+      "status": "pending",
+      "created_at": "2025-12-09T23:59:19.504327-05:00",
+      "updated_at": "2025-12-09T23:59:19.504327-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 49,
+      "node_type": "outcome",
+      "title": "WASM config added to main",
+      "description": "Added missing wasm-bindgen dependency and exports. Pushed to main, waiting for new deploy.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:00:46.400985-05:00",
+      "updated_at": "2025-12-10T00:00:46.400985-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from_node_id": 1,
+      "to_node_id": 2,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal requires deciding on argument handling first",
+      "created_at": "2025-12-09T22:33:37.693501-05:00"
+    },
+    {
+      "id": 2,
+      "from_node_id": 2,
+      "to_node_id": 3,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Observation informs the decision",
+      "created_at": "2025-12-09T22:33:53.580078-05:00"
+    },
+    {
+      "id": 3,
+      "from_node_id": 3,
+      "to_node_id": 4,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Observation leads to this decision",
+      "created_at": "2025-12-09T22:34:04.335088-05:00"
+    },
+    {
+      "id": 4,
+      "from_node_id": 2,
+      "to_node_id": 4,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "This resolves the argument parsing question",
+      "created_at": "2025-12-09T22:34:04.341246-05:00"
+    },
+    {
+      "id": 5,
+      "from_node_id": 4,
+      "to_node_id": 5,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Decision on architecture leads to project initialization",
+      "created_at": "2025-12-09T22:34:27.181436-05:00"
+    },
+    {
+      "id": 6,
+      "from_node_id": 5,
+      "to_node_id": 6,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Action resulted in this outcome",
+      "created_at": "2025-12-09T22:34:52.493852-05:00"
+    },
+    {
+      "id": 7,
+      "from_node_id": 6,
+      "to_node_id": 7,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "After project init, implementing first feature",
+      "created_at": "2025-12-09T22:35:16.445992-05:00"
+    },
+    {
+      "id": 8,
+      "from_node_id": 1,
+      "to_node_id": 7,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "This action contributes to the main goal",
+      "created_at": "2025-12-09T22:35:16.459598-05:00"
+    },
+    {
+      "id": 9,
+      "from_node_id": 7,
+      "to_node_id": 8,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementation requires this structural decision",
+      "created_at": "2025-12-09T22:35:32.261397-05:00"
+    },
+    {
+      "id": 10,
+      "from_node_id": 4,
+      "to_node_id": 8,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "This elaborates on the core logic separation decision",
+      "created_at": "2025-12-09T22:35:32.270666-05:00"
+    },
+    {
+      "id": 11,
+      "from_node_id": 7,
+      "to_node_id": 9,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementation action led to this outcome",
+      "created_at": "2025-12-09T22:36:28.231173-05:00"
+    },
+    {
+      "id": 12,
+      "from_node_id": 8,
+      "to_node_id": 9,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Architecture decision enabled clean implementation",
+      "created_at": "2025-12-09T22:36:28.239513-05:00"
+    },
+    {
+      "id": 13,
+      "from_node_id": 9,
+      "to_node_id": 10,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Successful implementation leads to PR creation",
+      "created_at": "2025-12-09T22:36:44.414767-05:00"
+    },
+    {
+      "id": 14,
+      "from_node_id": 10,
+      "to_node_id": 11,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR creation action succeeded",
+      "created_at": "2025-12-09T22:37:41.397522-05:00"
+    },
+    {
+      "id": 15,
+      "from_node_id": 1,
+      "to_node_id": 12,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "WASM compilation is next phase of main goal",
+      "created_at": "2025-12-09T22:39:46.662659-05:00"
+    },
+    {
+      "id": 16,
+      "from_node_id": 11,
+      "to_node_id": 12,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR #1 completion enables WASM work",
+      "created_at": "2025-12-09T22:39:46.670481-05:00"
+    },
+    {
+      "id": 17,
+      "from_node_id": 12,
+      "to_node_id": 13,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal requires tooling decision",
+      "created_at": "2025-12-09T22:40:02.264200-05:00"
+    },
+    {
+      "id": 18,
+      "from_node_id": 13,
+      "to_node_id": 14,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Tooling decision leads to implementation",
+      "created_at": "2025-12-09T22:40:30.860670-05:00"
+    },
+    {
+      "id": 19,
+      "from_node_id": 14,
+      "to_node_id": 15,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Cargo.toml config enables lib.rs WASM exports",
+      "created_at": "2025-12-09T22:40:57.832216-05:00"
+    },
+    {
+      "id": 20,
+      "from_node_id": 15,
+      "to_node_id": 16,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "While adding WASM exports, extended the API",
+      "created_at": "2025-12-09T22:41:29.557385-05:00"
+    },
+    {
+      "id": 21,
+      "from_node_id": 16,
+      "to_node_id": 17,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "API ready, now building WASM",
+      "created_at": "2025-12-09T22:42:02.140620-05:00"
+    },
+    {
+      "id": 22,
+      "from_node_id": 17,
+      "to_node_id": 18,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Build attempt revealed missing target",
+      "created_at": "2025-12-09T22:42:18.698953-05:00"
+    },
+    {
+      "id": 23,
+      "from_node_id": 18,
+      "to_node_id": 19,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Observation leads to decision on how to proceed",
+      "created_at": "2025-12-09T22:42:36.153676-05:00"
+    },
+    {
+      "id": 24,
+      "from_node_id": 19,
+      "to_node_id": 20,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Rustup installation enabled successful build",
+      "created_at": "2025-12-09T22:43:52.425375-05:00"
+    },
+    {
+      "id": 25,
+      "from_node_id": 20,
+      "to_node_id": 21,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Testing follows successful build",
+      "created_at": "2025-12-09T22:44:20.635128-05:00"
+    },
+    {
+      "id": 26,
+      "from_node_id": 21,
+      "to_node_id": 22,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Test creation reveals HTTP server requirement",
+      "created_at": "2025-12-09T22:44:51.662385-05:00"
+    },
+    {
+      "id": 27,
+      "from_node_id": 22,
+      "to_node_id": 23,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Testing complete, ready for PR",
+      "created_at": "2025-12-09T22:45:15.179552-05:00"
+    },
+    {
+      "id": 28,
+      "from_node_id": 12,
+      "to_node_id": 23,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR #2 achieves the WASM goal",
+      "created_at": "2025-12-09T22:45:15.186079-05:00"
+    },
+    {
+      "id": 29,
+      "from_node_id": 23,
+      "to_node_id": 24,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR creation action succeeded",
+      "created_at": "2025-12-09T22:46:18.398734-05:00"
+    },
+    {
+      "id": 30,
+      "from_node_id": 24,
+      "to_node_id": 25,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Pausing after PR #2 for tooling improvements",
+      "created_at": "2025-12-09T22:52:37.782260-05:00"
+    },
+    {
+      "id": 31,
+      "from_node_id": 25,
+      "to_node_id": 26,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Tooling update completed",
+      "created_at": "2025-12-09T23:26:42.493368-05:00"
+    },
+    {
+      "id": 32,
+      "from_node_id": 1,
+      "to_node_id": 27,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Web UI is the final phase of the main goal",
+      "created_at": "2025-12-09T23:27:03.084417-05:00"
+    },
+    {
+      "id": 33,
+      "from_node_id": 24,
+      "to_node_id": 27,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR #2 (WASM) enables Web UI development",
+      "created_at": "2025-12-09T23:27:03.092606-05:00"
+    },
+    {
+      "id": 34,
+      "from_node_id": 27,
+      "to_node_id": 28,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal requires architecture decision",
+      "created_at": "2025-12-09T23:27:22.777021-05:00"
+    },
+    {
+      "id": 35,
+      "from_node_id": 28,
+      "to_node_id": 29,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Architecture decision leads to implementation",
+      "created_at": "2025-12-09T23:27:41.278673-05:00"
+    },
+    {
+      "id": 36,
+      "from_node_id": 29,
+      "to_node_id": 30,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementation action succeeded",
+      "created_at": "2025-12-09T23:28:38.277427-05:00"
+    },
+    {
+      "id": 37,
+      "from_node_id": 30,
+      "to_node_id": 31,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "UI design supports static hosting",
+      "created_at": "2025-12-09T23:28:55.246096-05:00"
+    },
+    {
+      "id": 38,
+      "from_node_id": 31,
+      "to_node_id": 32,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Static site observation confirms we're ready for PR",
+      "created_at": "2025-12-09T23:29:18.166742-05:00"
+    },
+    {
+      "id": 39,
+      "from_node_id": 32,
+      "to_node_id": 33,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR creation action succeeded",
+      "created_at": "2025-12-09T23:31:29.139311-05:00"
+    },
+    {
+      "id": 40,
+      "from_node_id": 1,
+      "to_node_id": 34,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "GitHub Pages deployment completes the full project",
+      "created_at": "2025-12-09T23:33:20.198694-05:00"
+    },
+    {
+      "id": 41,
+      "from_node_id": 33,
+      "to_node_id": 34,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR #3 (Web UI) enables deployment",
+      "created_at": "2025-12-09T23:33:20.215353-05:00"
+    },
+    {
+      "id": 42,
+      "from_node_id": 34,
+      "to_node_id": 35,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal requires deployment strategy decision",
+      "created_at": "2025-12-09T23:33:44.888698-05:00"
+    },
+    {
+      "id": 43,
+      "from_node_id": 35,
+      "to_node_id": 36,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Strategy decision leads to implementation",
+      "created_at": "2025-12-09T23:34:01.465080-05:00"
+    },
+    {
+      "id": 44,
+      "from_node_id": 36,
+      "to_node_id": 37,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Workflow creation revealed this tooling choice",
+      "created_at": "2025-12-09T23:34:26.809786-05:00"
+    },
+    {
+      "id": 45,
+      "from_node_id": 37,
+      "to_node_id": 38,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "After workflow creation, configure Pages",
+      "created_at": "2025-12-09T23:34:47.888851-05:00"
+    },
+    {
+      "id": 46,
+      "from_node_id": 38,
+      "to_node_id": 39,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Configuration action succeeded",
+      "created_at": "2025-12-09T23:35:11.890912-05:00"
+    },
+    {
+      "id": 47,
+      "from_node_id": 39,
+      "to_node_id": 40,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Pages configured, ready for PR",
+      "created_at": "2025-12-09T23:35:28.474521-05:00"
+    },
+    {
+      "id": 48,
+      "from_node_id": 40,
+      "to_node_id": 41,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "PR creation action succeeded",
+      "created_at": "2025-12-09T23:37:45.184193-05:00"
+    },
+    {
+      "id": 49,
+      "from_node_id": 41,
+      "to_node_id": 42,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "After PR creation, merging chain",
+      "created_at": "2025-12-09T23:49:55.627415-05:00"
+    },
+    {
+      "id": 50,
+      "from_node_id": 42,
+      "to_node_id": 43,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "After site is live, create demo README",
+      "created_at": "2025-12-09T23:54:16.588022-05:00"
+    },
+    {
+      "id": 51,
+      "from_node_id": 43,
+      "to_node_id": 44,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Discovered issue while verifying site",
+      "created_at": "2025-12-09T23:54:58.796974-05:00"
+    },
+    {
+      "id": 52,
+      "from_node_id": 44,
+      "to_node_id": 45,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Fixing the observed issue",
+      "created_at": "2025-12-09T23:55:23.844939-05:00"
+    },
+    {
+      "id": 53,
+      "from_node_id": 45,
+      "to_node_id": 46,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Fix action resulted in new deployment attempt",
+      "created_at": "2025-12-09T23:56:14.781966-05:00"
+    },
+    {
+      "id": 54,
+      "from_node_id": 46,
+      "to_node_id": 47,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Deploy still failing, found missing config",
+      "created_at": "2025-12-09T23:59:05.481995-05:00"
+    },
+    {
+      "id": 55,
+      "from_node_id": 47,
+      "to_node_id": 48,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Observation leads to fix action",
+      "created_at": "2025-12-09T23:59:24.900147-05:00"
+    },
+    {
+      "id": 56,
+      "from_node_id": 48,
+      "to_node_id": 49,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Fix action succeeded",
+      "created_at": "2025-12-10T00:00:53.990436-05:00"
+    }
+  ]
+}
