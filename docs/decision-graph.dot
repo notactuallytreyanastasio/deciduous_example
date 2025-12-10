@@ -2,9 +2,6 @@ digraph DecisionGraph {
   rankdir=TB;
   node [fontname="Arial" fontsize=10];
   edge [fontname="Arial" fontsize=9];
-  label="rwc: Rust wc clone - PR #1";
-  labelloc=t;
-  fontsize=14;
 
   1 [label="[1] Build wc clone in Rust\\n(95%)" shape="house" fillcolor="#FFE4B5" style="filled"];
   2 [label="[2] Choose argument parsing approach\\n(80%)" shape="diamond" fillcolor="#E6E6FA" style="filled"];
