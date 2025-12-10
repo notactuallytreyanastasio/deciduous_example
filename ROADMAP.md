@@ -6,15 +6,17 @@
 
 ## Known Bugs / Critical Fixes
 
-### Database Reset/Corruption
-- **Bug:** Database gets reset when used across multiple apps/sessions
-- **Symptom:** `deciduous link` fails with `FOREIGN KEY constraint failed` because referenced nodes no longer exist
-- **Impact:** Complete loss of decision history
+### Database Path Uses Relative CWD (CRITICAL)
+- **Bug:** `get_db_path()` in `db.rs` uses relative path `.deciduous/deciduous.db` based on current working directory
+- **Root cause:** When running `deciduous` from a different directory, it looks for/creates DB in THAT directory, not the original project
+- **Symptom:** `deciduous link` fails with `FOREIGN KEY constraint failed` because you're accidentally using a different (empty) database
+- **Impact:** Appears like data loss but data is actually still in original project's `.deciduous/` folder
 - **Fix needed:**
-  - Investigate why `.deciduous/deciduous.db` gets wiped
-  - Add database integrity checks on startup
-  - Auto-backup before operations
-  - Better error messages when graph state is inconsistent
+  - **Option 1 (Best):** Git-aware path resolution - walk up directories to find `.deciduous/` folder (like git finds `.git/`)
+  - **Option 2:** Store project root in a config file or use `DECIDUOUS_DB_PATH` env var
+  - **Option 3:** Warn loudly when no existing DB found in current directory, prompt to run `deciduous init`
+  - Add `deciduous which` command to show which DB file is being used
+- **Location:** `src/db.rs:14` - `fn get_db_path()`
 
 ### Link Command Fails Silently on Missing Nodes
 - Should warn clearly if source or target node doesn't exist
