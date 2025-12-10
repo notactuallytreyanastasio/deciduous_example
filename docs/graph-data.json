@@ -489,6 +489,96 @@
       "created_at": "2025-12-10T00:00:46.400985-05:00",
       "updated_at": "2025-12-10T00:00:46.400985-05:00",
       "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 50,
+      "node_type": "action",
+      "title": "Write comprehensive README demo",
+      "description": "Creating README that tours the deciduous workflow: showing real decision trees, Claude integration focus, and the full rwc journey. CLI reference at the end.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:08:23.168041-05:00",
+      "updated_at": "2025-12-10T00:08:23.168041-05:00",
+      "metadata_json": "{\"confidence\":90}"
+    },
+    {
+      "id": 51,
+      "node_type": "outcome",
+      "title": "README pushed with full deciduous demo",
+      "description": "Comprehensive README added: live demo links, real examples from graph, Claude integration guide, full decision graph PNG, CLI reference. 50 nodes, 57 edges documented.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:10:02.676939-05:00",
+      "updated_at": "2025-12-10T00:10:02.676939-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 52,
+      "node_type": "outcome",
+      "title": "Project complete - full deciduous demo",
+      "description": "Session complete. Built rwc (Rust wc clone) from CLI to WASM to Web UI to GitHub Pages. Full decision graph with 51 nodes, 58 edges. README serves as deciduous tour/demo.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:23:09.820566-05:00",
+      "updated_at": "2025-12-10T00:23:09.820566-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 53,
+      "node_type": "observation",
+      "title": "Web UI missing from main - only Hello World placeholder",
+      "description": "The full drag-and-drop file upload UI we built in Phase 3 didn't make it to main. Same issue as the missing WASM config - PR merge didn't include all changes.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:24:28.329353-05:00",
+      "updated_at": "2025-12-10T00:24:28.329353-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 54,
+      "node_type": "goal",
+      "title": "Fix Web UI on main branch",
+      "description": "Restore the full rwc web app with file upload, drag-and-drop, and WASM integration. The current index.html is just a Hello World placeholder.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:24:33.535405-05:00",
+      "updated_at": "2025-12-10T00:24:33.535405-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 55,
+      "node_type": "action",
+      "title": "Restore full Web UI to index.html",
+      "description": "Replacing Hello World placeholder with the full rwc web app: drag-and-drop file upload, WASM integration, dark theme, responsive design.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:24:50.977167-05:00",
+      "updated_at": "2025-12-10T00:24:50.977167-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 56,
+      "node_type": "outcome",
+      "title": "Web UI restored and pushed",
+      "description": "Full rwc web app now on main: drag-and-drop upload, WASM integration, dark theme, responsive. Pushed to trigger redeploy.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:26:03.448612-05:00",
+      "updated_at": "2025-12-10T00:26:03.448612-05:00",
+      "metadata_json": "{\"confidence\":95}"
+    },
+    {
+      "id": 57,
+      "node_type": "outcome",
+      "title": "Web UI live and working",
+      "description": "Live site at https://notactuallytreyanastasio.github.io/deciduous_example/ now shows the full rwc web app with file upload and WASM counting.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:34:06.657625-05:00",
+      "updated_at": "2025-12-10T00:34:06.657625-05:00",
+      "metadata_json": "{\"confidence\":100}"
+    },
+    {
+      "id": 58,
+      "node_type": "action",
+      "title": "Update graph-data.json with latest 57 nodes",
+      "description": "Syncing latest decision graph to docs/graph-data.json for the live graph viewer.",
+      "status": "pending",
+      "created_at": "2025-12-10T00:44:41.318612-05:00",
+      "updated_at": "2025-12-10T00:44:41.318612-05:00",
+      "metadata_json": "{\"confidence\":95}"
     }
   ],
   "edges": [
@@ -995,6 +1085,96 @@
       "weight": 1.0,
       "rationale": "Fix action succeeded",
       "created_at": "2025-12-10T00:00:53.990436-05:00"
+    },
+    {
+      "id": 57,
+      "from_node_id": 43,
+      "to_node_id": 50,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "README goal leads to writing action",
+      "created_at": "2025-12-10T00:08:27.728008-05:00"
+    },
+    {
+      "id": 58,
+      "from_node_id": 50,
+      "to_node_id": 51,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "README action completed successfully",
+      "created_at": "2025-12-10T00:10:10.290111-05:00"
+    },
+    {
+      "id": 59,
+      "from_node_id": 51,
+      "to_node_id": 52,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "README completion marks project done",
+      "created_at": "2025-12-10T00:23:15.753446-05:00"
+    },
+    {
+      "id": 60,
+      "from_node_id": 1,
+      "to_node_id": 52,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Original goal fully achieved",
+      "created_at": "2025-12-10T00:23:15.763450-05:00"
+    },
+    {
+      "id": 61,
+      "from_node_id": 53,
+      "to_node_id": 54,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Observation of missing UI leads to fix goal",
+      "created_at": "2025-12-10T00:24:39.660766-05:00"
+    },
+    {
+      "id": 62,
+      "from_node_id": 54,
+      "to_node_id": 55,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal leads to restoration action",
+      "created_at": "2025-12-10T00:24:55.776013-05:00"
+    },
+    {
+      "id": 63,
+      "from_node_id": 55,
+      "to_node_id": 56,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Restoration action completed",
+      "created_at": "2025-12-10T00:26:11.627829-05:00"
+    },
+    {
+      "id": 64,
+      "from_node_id": 56,
+      "to_node_id": 57,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Deployment succeeded, user confirmed working",
+      "created_at": "2025-12-10T00:34:13.545574-05:00"
+    },
+    {
+      "id": 65,
+      "from_node_id": 54,
+      "to_node_id": 57,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Fix goal achieved",
+      "created_at": "2025-12-10T00:34:13.554992-05:00"
+    },
+    {
+      "id": 66,
+      "from_node_id": 57,
+      "to_node_id": 58,
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "After confirming site works, update graph data",
+      "created_at": "2025-12-10T00:44:45.773048-05:00"
     }
   ]
 }
