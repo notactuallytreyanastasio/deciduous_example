@@ -32,6 +32,8 @@ jobs:
           # Copy WASM app
           cp index.html _site/
           cp -r pkg _site/
+          # Remove .gitignore from pkg so files get committed
+          rm -f _site/pkg/.gitignore
           # Copy decision graph viewer
           mkdir -p _site/graph
           cp docs/index.html _site/graph/
@@ -40,8 +42,6 @@ jobs:
           # Debug - show what we're deploying
           echo "=== _site contents ==="
           find _site -type f
-          echo "=== pkg contents ==="
-          ls -la pkg/
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
