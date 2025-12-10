@@ -250,9 +250,22 @@ deciduous link <from_id> <to_id> -r "reason"
 ```bash
 deciduous nodes          # List all nodes
 deciduous edges          # List all edges
-deciduous serve          # Start local web viewer
-deciduous sync           # Export to JSON
+deciduous serve          # Start local web viewer (http://localhost:3000)
+deciduous sync           # Export to docs/graph-data.json for GitHub Pages
 ```
+
+### GitHub Pages Deployment
+
+After `deciduous init`, your project is ready for GitHub Pages:
+
+```bash
+deciduous sync                              # Export graph to docs/
+git add docs/ .github/ && git push         # Push to trigger deploy
+```
+
+Then enable Pages: **Settings → Pages → Source: Deploy from branch → `gh-pages`**
+
+Your graph will be live at `https://<user>.github.io/<repo>/`
 
 ### Exporting
 
