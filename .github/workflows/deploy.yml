@@ -37,6 +37,11 @@ jobs:
           cp docs/index.html _site/graph/
           cp docs/graph-data.json _site/graph/
           touch _site/.nojekyll
+          # Debug - show what we're deploying
+          echo "=== _site contents ==="
+          find _site -type f
+          echo "=== pkg contents ==="
+          ls -la pkg/
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
