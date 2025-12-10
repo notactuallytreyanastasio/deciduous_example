@@ -1,0 +1,15 @@
+{
+  "name": "rwc",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "rwc_bg.wasm",
+    "rwc.js",
+    "rwc.d.ts"
+  ],
+  "main": "rwc.js",
+  "types": "rwc.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

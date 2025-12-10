@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rwc - Word Count in WebAssembly</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e4e4e4;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #444;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #6c5ce7;
+            background: rgba(108, 92, 231, 0.1);
+        }
+
+        .upload-area svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .upload-area p {
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area .hint {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .results {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filename {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            word-break: break-all;
+            font-size: 0.9rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #6c5ce7;
+            font-family: monospace;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        .wc-output {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c5ce7;
+        }
+
+        .wc-output::before {
+            content: "$ wc ";
+            color: #888;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6c5ce7;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 500px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><code>rwc</code></h1>
+            <p class="subtitle">Word count powered by Rust + WebAssembly</p>
+        </header>
+
+        <div class="upload-area" id="upload-area">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p>Drop a file here or click to upload</p>
+            <p class="hint">Text files work best</p>
+        </div>
+
+        <input type="file" id="file-input">
+
+        <div class="error" id="error"></div>
+        <div class="loading" id="loading">Loading WebAssembly module</div>
+
+        <div class="results" id="results">
+            <div class="filename" id="filename"></div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="lines">0</div>
+                    <div class="stat-label">Lines</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="words">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="bytes">0</div>
+                    <div class="stat-label">Bytes</div>
+                </div>
+            </div>
+            <div class="wc-output" id="wc-output"></div>
+        </div>
+
+        <footer>
+            Built with <a href="https://www.rust-lang.org/">Rust</a> and <a href="https://webassembly.org/">WebAssembly</a>
+            <br>
+            <a href="https://github.com/notactuallytreyanastasio/deciduous_example">View Source</a> |
+            <a href="./graph/">Decision Graph</a>
+        </footer>
+    </div>
+
+    <script type="module">
+        import init, { count_all } from './pkg/rwc.js';
+
+        let wasmReady = false;
+        const loading = document.getElementById('loading');
+
+        async function initWasm() {
+            loading.classList.add('visible');
+            try {
+                await init();
+                wasmReady = true;
+                loading.classList.remove('visible');
+            } catch (e) {
+                loading.classList.remove('visible');
+                showError('Failed to load WebAssembly module: ' + e.message);
+            }
+        }
+
+        function showError(message) {
+            const error = document.getElementById('error');
+            error.textContent = message;
+            error.classList.add('visible');
+        }
+
+        function hideError() {
+            document.getElementById('error').classList.remove('visible');
+        }
+
+        function formatNumber(n) {
+            return n.toLocaleString();
+        }
+
+        async function processFile(file) {
+            hideError();
+
+            if (!wasmReady) {
+                showError('WebAssembly module not loaded yet. Please try again.');
+                return;
+            }
+
+            try {
+                const text = await file.text();
+                const result = count_all(text);
+
+                document.getElementById('filename').textContent = file.name;
+                document.getElementById('lines').textContent = formatNumber(result.lines);
+                document.getElementById('words').textContent = formatNumber(result.words);
+                document.getElementById('bytes').textContent = formatNumber(result.bytes);
+                document.getElementById('wc-output').textContent =
+                    `${result.lines} ${result.words} ${result.bytes} ${file.name}`;
+
+                document.getElementById('results').classList.add('visible');
+
+                result.free();
+            } catch (e) {
+                showError('Error processing file: ' + e.message);
+            }
+        }
+
+        // Initialize
+        initWasm();
+
+        // Event listeners
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                processFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                processFile(fileInput.files[0]);
+            }
+        });
+    </script>
+</body>
+</html>
