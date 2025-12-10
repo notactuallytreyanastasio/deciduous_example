@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,8 +35,14 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
+          # Copy WASM app
           cp index.html _site/
           cp -r pkg _site/
+          # Copy decision graph viewer
+          mkdir -p _site/graph
+          cp docs/index.html _site/graph/
+          cp docs/graph-data.json _site/graph/
+          cp docs/.nojekyll _site/ 2>/dev/null || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
