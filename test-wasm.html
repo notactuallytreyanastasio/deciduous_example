@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rwc WASM Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .pass { background: #d4edda; }
+        .fail { background: #f8d7da; }
+        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>rwc WASM Test</h1>
+    <div id="results"></div>
+
+    <script type="module">
+        import init, { count_lines, count_words, count_bytes, count_all } from './pkg/rwc.js';
+
+        async function runTests() {
+            await init();
+
+            const results = document.getElementById('results');
+            let passed = 0;
+            let failed = 0;
+
+            function test(name, actual, expected) {
+                const pass = actual === expected;
+                if (pass) passed++; else failed++;
+                results.innerHTML += `
+                    <div class="test ${pass ? 'pass' : 'fail'}">
+                        <strong>${pass ? '✓' : '✗'} ${name}</strong><br>
+                        Expected: ${expected}, Got: ${actual}
+                    </div>
+                `;
+            }
+
+            // Test count_lines
+            test('count_lines empty', count_lines(''), 0);
+            test('count_lines no newline', count_lines('hello'), 0);
+            test('count_lines one newline', count_lines('hello\n'), 1);
+            test('count_lines multiple', count_lines('hello\nworld\n'), 2);
+
+            // Test count_words
+            test('count_words empty', count_words(''), 0);
+            test('count_words single', count_words('hello'), 1);
+            test('count_words multiple', count_words('hello world'), 2);
+            test('count_words with newlines', count_words('hello\nworld\nfoo bar'), 4);
+
+            // Test count_bytes
+            test('count_bytes', count_bytes('hello'), 5);
+            test('count_bytes with newline', count_bytes('hello\n'), 6);
+
+            // Test count_all
+            const result = count_all('hello\nworld\n');
+            test('count_all lines', result.lines, 2);
+            test('count_all words', result.words, 2);
+            test('count_all bytes', result.bytes, 12);
+            result.free();
+
+            results.innerHTML += `
+                <div class="test ${failed === 0 ? 'pass' : 'fail'}">
+                    <strong>Summary: ${passed} passed, ${failed} failed</strong>
+                </div>
+            `;
+        }
+
+        runTests().catch(e => {
+            document.getElementById('results').innerHTML = `<div class="test fail"><strong>Error: ${e.message}</strong></div>`;
+        });
+    </script>
+</body>
+</html>
