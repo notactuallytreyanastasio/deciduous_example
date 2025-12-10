@@ -1,0 +1,31 @@
+2025-12-09 22:34:33 - git branch backup-before-rust-init
+2025-12-09 22:34:38 - git checkout -b feature/rwc-line-count
+2025-12-09 22:37:00 - git add Cargo.toml Cargo.lock src/lib.rs src/main.rs
+2025-12-09 22:37:11 - git commit (rwc initial implementation)
+2025-12-09 22:37:16 - git push -u origin feature/rwc-line-count
+2025-12-09 22:40:08 - git checkout -b feature/rwc-wasm
+2025-12-09 22:45:33 - git add Cargo.toml Cargo.lock src/lib.rs test-wasm.html
+2025-12-09 22:45:44 - git commit (WASM support)
+2025-12-09 22:45:49 - git push -u origin feature/rwc-wasm
+git add docs/ - staging decision graph assets
+git commit - docs: add decision graph visualization
+git checkout -b feature/rwc-enhanced-writeup
+git cherry-pick 079fa49 - feat: implement rwc
+git commit - docs: add decision graph visualization
+git push -u origin feature/rwc-enhanced-writeup
+git commit - ci: add cleanup workflow
+git push
+2025-12-09 23:27:10 - git checkout -b feature/rwc-web-ui
+2025-12-09 23:30:14 - git add index.html decision-graph-pr3.png
+2025-12-09 23:30:33 - git commit (Web UI)
+2025-12-09 23:30:40 - git push -u origin feature/rwc-web-ui
+2025-12-09 23:33:33 - git checkout -b feature/github-pages
+2025-12-09 23:35:41 - git add .github/workflows/deploy.yml
+2025-12-09 23:35:51 - git commit (GitHub Pages deployment)
+2025-12-09 23:36:03 - git checkout feature/github-pages
+2025-12-09 23:36:08 - git cherry-pick 8ef5843
+2025-12-09 23:36:15 - git push -u origin feature/github-pages
+2025-12-09 23:36:32 - git add decision-graph-pr4.png
+2025-12-09 23:36:39 - git push --force-with-lease
+2025-12-09 23:37:17 - git checkout feature/github-pages
+Resolved conflict
